@@ -113,7 +113,7 @@ class Bucket:
         if bucket.cb > LEVIN_DEFAULT_MAX_PACKET_SIZE:
             raise IOError("payload too large")
 
-        if bucket.command.value not in P2P_COMMANDS:
+        if bucket.command.value not in P2P_COMMANDS and bucket.command.value not in CRYPTONOTE_COMMANDS:
             raise IOError("unregonized command: %d" % bucket.command.value)
 
         bucket.payload = sock.recv(bucket.cb.value)
