@@ -97,8 +97,15 @@ def peer_finder(target:tuple) -> set:
             sys.stderr.write(f"<< Invalid response from {target}: buffer does not start with Levin signature\n")
             break
 
-        bucket = Bucket.from_buffer(signature=buffer, sock=sock)
-        buckets.append(bucket)
+        try:
+            bucket = Bucket.from_buffer(signature=buffer, sock=sock)
+            buckets.append(bucket)
+        except TimeoutError:
+            sys.stderr.write(f"<< Connection to {target} timed out while reading from buffer\n")
+            break
+        except Exception as e:
+            sys.stderr.write(f"<< Error while reading from buffer from {target}: {e}\n")
+            break
 
         if bucket.command == 1001:
             peers = bucket.get_peers() or []
