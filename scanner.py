@@ -25,6 +25,7 @@ nodes_scanned = {
 if not os.path.isdir(data_dir):
     os.mkdir(data_dir)
     nodes_to_scan.add(first_peer)
+    already_scanned = 0
 else:
     try:
         with open(f"{data_dir}/p2p_scan.json", "r") as f:
